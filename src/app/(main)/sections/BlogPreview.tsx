@@ -1,0 +1,256 @@
+"use client";
+
+import React from 'react';
+import Link from 'next/link';
+import { ArrowRight, Calendar, Clock, Sparkles } from 'lucide-react';
+import { CardTilt } from '@/components/ui/card-tilt';
+import { useMagnetic } from '@/lib/hooks/use-magnetic';
+import { MockupGraphic } from '@/components/shared/mockup-graphic';
+
+interface BlogPost {
+  slug: string;
+  title: string;
+  excerpt: string;
+  author: string;
+  date: string;
+  readTime: string;
+  category: string;
+  gradient: string;
+  featured: boolean;
+  visual: React.ReactNode;
+}
+
+interface BlogPostType {
+  slug: string;
+  title: string;
+  excerpt: string;
+  createdAt: Date | string;
+  category: string;
+  featured: boolean;
+  author: {
+    name: string;
+  };
+}
+
+interface BlogPreviewProps {
+  posts?: BlogPostType[];
+}
+
+export default function BlogPreview({ posts: customPosts }: BlogPreviewProps) {
+  const ctaRef = useMagnetic(0.25);
+
+  const displayPosts: BlogPost[] = customPosts && customPosts.length > 0
+    ? customPosts.map((p, idx) => ({
+        slug: p.slug,
+        title: p.title,
+        excerpt: p.excerpt,
+        author: p.author.name,
+        date: new Date(p.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+        readTime: "6 min read",
+        category: p.category.toUpperCase(),
+        gradient: idx === 0 
+          ? "from-blue-600 via-indigo-600 to-cyan-500" 
+          : idx === 1 
+            ? "from-purple-600 to-pink-500" 
+            : "from-orange-500 to-red-500",
+        featured: idx === 0,
+        visual: <MockupGraphic type="blog" slug={p.slug} />
+      }))
+    : [
+        {
+          slug: "future-of-ai-in-enterprise",
+          title: "The Future of AI in Enterprise: Multi-Agent Systems & RAG Architectures",
+          excerpt: "An in-depth analysis of emerging autonomous reasoning agents and vector indexing paradigms driving backend operational efficiency gains in 2026.",
+          author: "David Park",
+          date: "June 5, 2026",
+          readTime: "8 min read",
+          category: "AI & AUTOMATION",
+          gradient: "from-blue-600 via-indigo-600 to-cyan-500",
+          featured: true,
+          visual: (
+            <svg viewBox="0 0 400 200" className="w-full h-full fill-none">
+              <rect width="400" height="200" rx="12" fill="#f8fafc" />
+              <circle cx="100" cy="100" r="25" fill="#ffffff" stroke="#3b82f6" strokeWidth="2" />
+              <circle cx="200" cy="60" r="20" fill="#ffffff" stroke="#7c3aed" strokeWidth="1.5" />
+              <circle cx="200" cy="140" r="20" fill="#ffffff" stroke="#7c3aed" strokeWidth="1.5" />
+              <circle cx="300" cy="100" r="25" fill="#ffffff" stroke="#06b6d4" strokeWidth="2" />
+              <line x1="125" y1="90" x2="182" y2="70" stroke="#7c3aed" strokeWidth="1.5" strokeDasharray="3 3" />
+              <line x1="125" y1="110" x2="182" y2="130" stroke="#7c3aed" strokeWidth="1.5" strokeDasharray="3 3" />
+              <line x1="218" y1="70" x2="277" y2="90" stroke="#06b6d4" strokeWidth="1.5" strokeDasharray="3 3" />
+              <line x1="218" y1="130" x2="277" y2="110" stroke="#06b6d4" strokeWidth="1.5" strokeDasharray="3 3" />
+              <text x="100" y="103" fill="#2563eb" fontSize="7" fontWeight="bold" textAnchor="middle">INPUT</text>
+              <text x="200" y="63" fill="#6d28d9" fontSize="6" fontWeight="bold" textAnchor="middle">AGENT A</text>
+              <text x="200" y="143" fill="#6d28d9" fontSize="6" fontWeight="bold" textAnchor="middle">AGENT B</text>
+              <text x="300" y="103" fill="#0891b2" fontSize="7" fontWeight="bold" textAnchor="middle">RAG OUT</text>
+            </svg>
+          )
+        },
+        {
+          slug: "building-high-performance-engineering-teams",
+          title: "Assembling Elite Engineering Units: Sourcing & Culture Systems",
+          excerpt: "Strategic guide to recruiting senior software architects, optimizing remote-first pipelines, and building continuous delivery code cultures.",
+          author: "Lisa Thompson",
+          date: "May 28, 2026",
+          readTime: "6 min read",
+          category: "TALENT ORCHESTRATION",
+          gradient: "from-purple-600 to-pink-500",
+          featured: false,
+          visual: null
+        },
+        {
+          slug: "nextjs-15-production-best-practices",
+          title: "Deploying Next.js 15 at Scale: Caching, Streaming, and Edge Optimizations",
+          excerpt: "How to tune Server Components, streaming response models, and CDN cache headers to ensure 98+ PageSpeed compliance under traffic spikes.",
+          author: "Michael Chen",
+          date: "May 20, 2026",
+          readTime: "10 min read",
+          category: "DIGITAL ENGINEERING",
+          gradient: "from-orange-500 to-red-500",
+          featured: false,
+          visual: null
+        }
+      ];
+ 
+  const featuredPost = displayPosts.find(p => p.featured) || displayPosts[0];
+  const secondaryPosts = displayPosts.filter(p => p !== featuredPost);
+ 
+ 
+  return (
+    <section className="py-24 md:py-32 bg-[#0a0a0f] relative overflow-hidden border-t border-white/5" id="blog">
+      {/* Background blurs */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(139,92,246,0.01)_0%,transparent_50%)]" />
+ 
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
+        
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-20">
+          <div>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-semibold text-blue-300 uppercase tracking-wider mb-4">
+              <Sparkles className="w-3.5 h-3.5" />
+              Insights & Editorial
+            </span>
+            <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
+              Latest Intel
+            </h2>
+          </div>
+          <p className="text-slate-400 text-base max-w-md leading-relaxed">
+            Tech analysis, architectural breakdowns, and strategic planning from our engineering leads.
+          </p>
+        </div>
+ 
+        {/* Asymmetric Editorial Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          
+          {/* Left Pane: Featured Post */}
+          <div className="lg:col-span-7 h-full">
+            <CardTilt className="h-full">
+              <Link href={`/blog/${featuredPost.slug}`} className="group block h-full">
+                <div className="h-full rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl hover:bg-white/[0.05] hover:border-white/20 hover:shadow-2xl hover:shadow-black/20 transition-all duration-500 p-8 flex flex-col justify-between relative overflow-hidden">
+                  
+                  {/* Neon top accent strip */}
+                  <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${featuredPost.gradient}`} />
+ 
+                  {/* Header visual */}
+                  <div className="w-full mb-8 bg-[#050508] rounded-2xl border border-white/5 p-3 shadow-sm">
+                    {featuredPost.visual}
+                  </div>
+ 
+                  <div>
+                    {/* Meta info */}
+                    <div className="flex items-center gap-3 mb-4 text-xs font-semibold">
+                      <span className="px-2.5 py-1 rounded-md bg-blue-500/10 text-blue-400 tracking-wider">
+                        {featuredPost.category}
+                      </span>
+                      <span className="text-slate-400 flex items-center gap-1">
+                        <Clock className="w-3 h-3 text-slate-400" />
+                        {featuredPost.readTime}
+                      </span>
+                    </div>
+ 
+                    {/* Headline */}
+                    <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight leading-snug group-hover:text-blue-400 transition-colors mb-4">
+                      {featuredPost.title}
+                    </h3>
+ 
+                    {/* Excerpt */}
+                    <p className="text-slate-400 text-sm leading-relaxed mb-6">
+                      {featuredPost.excerpt}
+                    </p>
+                  </div>
+ 
+                  {/* Bottom Footer Info */}
+                  <div className="flex items-center justify-between pt-6 border-t border-white/5 mt-auto text-xs text-slate-400">
+                    <span className="font-semibold text-slate-300">{featuredPost.author}</span>
+                    <span className="flex items-center gap-1">
+                      <Calendar className="w-3 h-3 text-slate-400" />
+                      {featuredPost.date}
+                    </span>
+                  </div>
+ 
+                </div>
+              </Link>
+            </CardTilt>
+          </div>
+ 
+          {/* Right Pane: Secondary editorial list */}
+          <div className="lg:col-span-5 flex flex-col justify-between gap-8 h-full">
+            <div className="flex flex-col gap-6 h-full">
+              {secondaryPosts.map((post) => (
+                <CardTilt key={post.slug} className="flex-1">
+                  <Link href={`/blog/${post.slug}`} className="group block h-full">
+                    <div className="h-full rounded-2xl border border-white/5 bg-slate-50/50 hover:bg-white hover:border-slate-300 hover:shadow-2xl hover:shadow-slate-100 transition-all duration-500 p-7 flex flex-col justify-between relative overflow-hidden">
+                      
+                      <div className={`absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r ${post.gradient}`} />
+ 
+                      <div>
+                        {/* Meta info */}
+                        <div className="flex items-center gap-3 mb-3 text-[10px] font-bold">
+                          <span className="text-blue-400 tracking-wider">
+                            {post.category}
+                          </span>
+                          <span className="text-slate-400 flex items-center gap-1">
+                            <Clock className="w-3 h-3 text-slate-400" />
+                            {post.readTime}
+                          </span>
+                        </div>
+ 
+                        {/* Title */}
+                        <h4 className="text-lg font-bold text-white leading-normal tracking-tight group-hover:text-blue-400 transition-colors mb-3">
+                          {post.title}
+                        </h4>
+ 
+                        {/* Excerpt */}
+                        <p className="text-slate-400 text-xs leading-relaxed line-clamp-3">
+                          {post.excerpt}
+                        </p>
+                      </div>
+ 
+                      {/* Footer */}
+                      <div className="flex items-center justify-between pt-4 border-t border-white/5 mt-6 text-[10px] text-slate-400">
+                        <span className="font-semibold text-slate-300">{post.author}</span>
+                        <span>{post.date}</span>
+                      </div>
+ 
+                    </div>
+                  </Link>
+                </CardTilt>
+              ))}
+            </div>
+ 
+            {/* Read all button */}
+            <Link
+              ref={ctaRef}
+              href="/blog"
+              className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-300 font-bold hover:text-white transition-all text-sm shadow-md"
+            >
+              Access All Editorial Intel
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+ 
+        </div>
+ 
+      </div>
+    </section>
+  );
+}

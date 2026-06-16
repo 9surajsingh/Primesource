@@ -1,0 +1,185 @@
+'use client';
+
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { Brain, Workflow, Settings, Cpu, BarChart3, Bot, Zap, TrendingUp, Shield, CheckCircle2 } from 'lucide-react';
+import { PageHero } from '@/components/shared/page-hero';
+import { CTASection } from '@/components/shared/cta-section';
+
+const aiServices = [
+  { icon: Brain, title: 'Machine Learning', description: 'Custom ML models for prediction, classification, recommendation, and anomaly detection tailored to your business data.' },
+  { icon: Bot, title: 'Natural Language Processing', description: 'Chatbots, sentiment analysis, document processing, and text generation powered by state-of-the-art NLP models.' },
+  { icon: Cpu, title: 'Computer Vision', description: 'Image recognition, object detection, quality inspection, and visual search systems for industrial and consumer applications.' },
+  { icon: BarChart3, title: 'Predictive Analytics', description: 'Data-driven forecasting for sales, demand, churn, and market trends to enable proactive decision-making.' },
+  { icon: Workflow, title: 'Workflow Automation', description: 'Intelligent workflow orchestration that connects your tools, automates approvals, and eliminates manual handoffs.' },
+  { icon: Settings, title: 'Business Process Automation', description: 'End-to-end process automation with RPA bots that handle repetitive tasks across your enterprise systems.' },
+];
+
+const useCases = [
+  { title: 'Customer Support Automation', description: 'AI-powered chatbots and ticket routing that resolve 60% of inquiries without human intervention.', metric: '60%', metricLabel: 'Resolution Rate' },
+  { title: 'Intelligent Document Processing', description: 'Extract, classify, and route information from invoices, contracts, and forms automatically.', metric: '90%', metricLabel: 'Accuracy' },
+  { title: 'Predictive Maintenance', description: 'IoT sensor data analysis to predict equipment failures before they happen, reducing downtime.', metric: '45%', metricLabel: 'Downtime Reduction' },
+  { title: 'Recruitment Screening', description: 'AI-assisted resume screening and candidate matching that shortens hiring cycles significantly.', metric: '3x', metricLabel: 'Faster Hiring' },
+  { title: 'Supply Chain Optimization', description: 'Demand forecasting and inventory optimization using machine learning for reduced waste.', metric: '30%', metricLabel: 'Cost Savings' },
+  { title: 'Fraud Detection', description: 'Real-time transaction monitoring with anomaly detection to identify and prevent fraudulent activity.', metric: '99%', metricLabel: 'Detection Rate' },
+];
+
+const technologies = [
+  'Python', 'TensorFlow', 'PyTorch', 'OpenAI API', 'LangChain', 'Hugging Face',
+  'scikit-learn', 'Pandas', 'Apache Spark', 'Kafka', 'Airflow', 'MLflow',
+  'UiPath', 'Power Automate', 'Zapier', 'n8n', 'Docker', 'Kubernetes',
+];
+
+const roiMetrics = [
+  { value: '40%', label: 'Average Cost Reduction' },
+  { value: '65%', label: 'Process Time Savings' },
+  { value: '3-6 mo', label: 'Typical ROI Timeline' },
+  { value: '99.5%', label: 'Automation Accuracy' },
+];
+
+export default function AIAutomationPage() {
+  return (
+    <>
+      <PageHero
+        title="AI & Automation Solutions"
+        description="Unlock the power of artificial intelligence and intelligent automation to transform your business operations and drive unprecedented efficiency."
+        breadcrumbs={[
+          { label: 'Home', href: '/' },
+          { label: 'Services', href: '/services' },
+          { label: 'AI & Automation' },
+        ]}
+      />
+
+      {/* Services */}
+      <section className="bg-slate-50 py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-12 items-start">
+            {/* Info + Image (Left) */}
+            <div className="lg:col-span-4 lg:sticky lg:top-28 flex flex-col">
+              <span className="mb-4 inline-block text-sm font-semibold uppercase tracking-wider text-blue-600">Capabilities</span>
+              <h2 className="mb-6 text-3xl font-bold text-slate-900 sm:text-4xl">AI & Automation Services</h2>
+              <p className="mb-8 text-slate-600 leading-relaxed">From intelligent process automation to custom AI models, we deliver solutions that create measurable business impact.</p>
+              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-slate-200 shadow-sm bg-slate-100 hover:shadow-md transition-shadow">
+                <Image
+                  src="/images/services/ai_automation.png"
+                  alt="AI & Automation Illustration"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 33vw"
+                />
+              </div>
+            </div>
+
+            {/* Cards (Right) */}
+            <div className="lg:col-span-8">
+              <div className="grid gap-6 sm:grid-cols-2">
+                {aiServices.map((service, index) => {
+                  const Icon = service.icon;
+                  return (
+                    <motion.div
+                      key={service.title}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: index * 0.08 }}
+                      className="group rounded-2xl border border-slate-200/80 bg-white p-8 transition-all hover:border-blue-500/30 hover:shadow-md"
+                    >
+                      <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <Icon className="h-6 w-6" />
+                      </div>
+                      <h3 className="mb-3 text-lg font-bold text-slate-900">{service.title}</h3>
+                      <p className="text-sm text-slate-600 leading-relaxed">{service.description}</p>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Use Cases */}
+      <section className="bg-white border-t border-b border-slate-200/60 py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="mb-16 text-center">
+            <span className="mb-4 inline-block text-sm font-semibold uppercase tracking-wider text-blue-600">Use Cases</span>
+            <h2 className="mb-6 text-3xl font-bold text-slate-900 sm:text-4xl">Real-World Applications</h2>
+          </motion.div>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {useCases.map((useCase, index) => (
+              <motion.div
+                key={useCase.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.08 }}
+                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+              >
+                <div className="mb-4 text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">{useCase.metric}</div>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-blue-600">{useCase.metricLabel}</p>
+                <h3 className="mb-2 text-lg font-bold text-slate-900">{useCase.title}</h3>
+                <p className="text-sm text-slate-600 leading-relaxed">{useCase.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ROI Metrics */}
+      <section className="bg-slate-50 py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="mb-16 text-center">
+            <span className="mb-4 inline-block text-sm font-semibold uppercase tracking-wider text-blue-600">Results</span>
+            <h2 className="mb-6 text-3xl font-bold text-slate-900 sm:text-4xl">Measurable ROI</h2>
+          </motion.div>
+          <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
+            {roiMetrics.map((metric, index) => (
+              <motion.div
+                key={metric.label}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                className="rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm"
+              >
+                <div className="mb-2 text-3xl font-bold text-blue-600 lg:text-4xl">{metric.value}</div>
+                <p className="text-sm text-slate-600 font-medium">{metric.label}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Technologies */}
+      <section className="bg-white border-t border-b border-slate-200/60 py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="mb-16 text-center">
+            <span className="mb-4 inline-block text-sm font-semibold uppercase tracking-wider text-blue-600">Tech Stack</span>
+            <h2 className="mb-6 text-3xl font-bold text-slate-900 sm:text-4xl">Technologies We Use</h2>
+          </motion.div>
+          <div className="flex flex-wrap justify-center gap-4">
+            {technologies.map((tech, index) => (
+              <motion.span
+                key={tech}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.3, delay: index * 0.03 }}
+                className="rounded-full border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-750 transition-all hover:border-purple-500 hover:bg-purple-50"
+              >
+                {tech}
+              </motion.span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <CTASection
+        title="Ready to Automate?"
+        description="Discover how AI and automation can transform your operations. Schedule a free assessment."
+        primaryAction={{ label: 'Get a Free Assessment', href: '/contact' }}
+        secondaryAction={{ label: 'View Case Studies', href: '/case-studies' }}
+      />
+    </>
+  );
+}

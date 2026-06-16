@@ -1,0 +1,112 @@
+"use client";
+
+import React from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { Clock, ArrowRight } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { MockupGraphic } from "./mockup-graphic";
+
+interface BlogCardProps {
+  title: string;
+  excerpt: string;
+  coverImage: string;
+  category: string;
+  author: string | {
+    name: string;
+    avatar?: string;
+  };
+  date: string;
+  readTime: string;
+  slug: string;
+  className?: string;
+  featured?: boolean;
+}
+
+export function BlogCard({
+  title,
+  excerpt,
+  coverImage,
+  category,
+  author,
+  date,
+  readTime,
+  slug,
+  className,
+  featured,
+}: BlogCardProps) {
+  const authorName = typeof author === "string" ? author : author.name;
+  const authorAvatar = typeof author === "string" ? undefined : author.avatar;
+  const initials = authorName
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase();
+
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-30px" }}
+      whileHover={{ y: -6 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      className={cn("group", className)}
+    >
+      <Link href={`/blog/${slug}`} className="block">
+        <div className="rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur-xl overflow-hidden transition-all duration-300 hover:border-white/20 hover:shadow-xl hover:shadow-blue-500/5">
+          {/* Cover Image replaced with Premium Mockup */}
+          <div className="relative aspect-[16/9] overflow-hidden">
+            <div className="w-full h-full transition-transform duration-500 group-hover:scale-[1.02]">
+               {coverImage && coverImage.startsWith('http') ? (
+                 <Image src={coverImage} alt={title} fill className="object-cover" />
+               ) : (
+                 <MockupGraphic type="blog" slug={slug} />
+               )}
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent" />
+            <div className="absolute top-4 left-4">
+              <Badge>{category}</Badge>
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="p-5 lg:p-6">
+            <h3 className="text-lg font-semibold text-white mb-2 line-clamp-2 group-hover:text-blue-400 transition-colors duration-300">
+              {title}
+            </h3>
+            <p className="text-sm text-slate-400 line-clamp-2 mb-4 leading-relaxed">
+              {excerpt}
+            </p>
+
+            {/* Meta */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <Avatar className="h-7 w-7">
+                  {authorAvatar && (
+                    <AvatarImage src={authorAvatar} alt={authorName} />
+                  )}
+                  <AvatarFallback className="text-[10px] bg-white/5 text-slate-300">
+                    {initials}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col">
+                  <span className="text-xs font-medium text-slate-300">
+                    {authorName}
+                  </span>
+                  <span className="text-[11px] text-slate-400">{date}</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-1 text-xs text-slate-400">
+                <Clock className="h-3 w-3" />
+                <span>{readTime}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Link>
+    </motion.article>
+  );
+}

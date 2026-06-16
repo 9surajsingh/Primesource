@@ -1,0 +1,91 @@
+"use client";
+
+import React from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { MockupGraphic } from "./mockup-graphic";
+
+interface CaseStudyCardProps {
+  title: string;
+  client: string;
+  industry: string;
+  coverImage: string;
+  technologies: string[];
+  slug: string;
+  className?: string;
+}
+
+export function CaseStudyCard({
+  title,
+  client,
+  industry,
+  coverImage,
+  technologies,
+  slug,
+  className,
+}: CaseStudyCardProps) {
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-30px" }}
+      whileHover={{ y: -6 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      className={cn("group", className)}
+    >
+      <Link href={`/case-studies/${slug}`} className="block">
+        <div className="rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur-xl overflow-hidden transition-all duration-300 hover:border-white/20 hover:shadow-xl hover:shadow-blue-500/5">
+          {/* Cover Image replaced with Premium Mockup */}
+          <div className="relative aspect-[16/10] overflow-hidden">
+            <div className="w-full h-full transition-transform duration-500 group-hover:scale-[1.02]">
+              <MockupGraphic type="case-study" slug={slug} />
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
+ 
+            {/* Hover overlay */}
+            <div className="absolute inset-0 flex items-center justify-center bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-xl flex items-center justify-center border border-white/20">
+                <ArrowUpRight className="h-5 w-5 text-white" />
+              </div>
+            </div>
+ 
+            {/* Client + Industry */}
+            <div className="absolute bottom-4 left-4 right-4">
+              <p className="text-xs text-white/80 font-medium mb-1">{client}</p>
+              <Badge variant="secondary" className="text-[10px] bg-white/20 text-white hover:bg-white/30 border-none">{industry}</Badge>
+            </div>
+          </div>
+ 
+          {/* Content */}
+          <div className="p-5 lg:p-6">
+            <h3 className="text-lg font-semibold text-white mb-3 line-clamp-2 group-hover:text-blue-400 transition-colors duration-300">
+              {title}
+            </h3>
+ 
+            {/* Technologies */}
+            <div className="flex flex-wrap gap-1.5">
+              {technologies.map((tech) => (
+                <span
+                  key={tech}
+                  className="inline-flex items-center rounded-md bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 text-[11px] font-medium text-blue-300"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+ 
+            {/* Link */}
+            <div className="mt-4 flex items-center gap-1.5 text-sm font-medium text-blue-400 group-hover:text-blue-300 transition-colors duration-300">
+              <span>View case study</span>
+              <ArrowUpRight className="h-4 w-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
+            </div>
+          </div>
+        </div>
+      </Link>
+    </motion.article>
+  );
+}

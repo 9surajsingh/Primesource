@@ -1,0 +1,337 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Enums ───────────────────────────────────────────────────────────────────
+
+enum UserRole {
+  ADMIN
+  EDITOR
+  USER
+}
+
+enum JobType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  FREELANCE
+}
+
+enum ApplicationStatus {
+  PENDING
+  REVIEWING
+  SHORTLISTED
+  INTERVIEWED
+  OFFERED
+  HIRED
+  REJECTED
+}
+
+enum ContactStatus {
+  NEW
+  READ
+  RESPONDED
+  ARCHIVED
+}
+
+// ─── Models ──────────────────────────────────────────────────────────────────
+
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  name      String
+  password  String
+  role      UserRole   @default(USER)
+  avatar    String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  posts     BlogPost[]
+
+  @@map("users")
+}
+
+model BlogPost {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  excerpt     String
+  content     String    @db.Text
+  coverImage  String?
+  category    String
+  tags        String[]
+  published   Boolean   @default(false)
+  featured    Boolean   @default(false)
+  author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId    String
+  views       Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  publishedAt DateTime?
+  
+  // SEO & Related Posts
+  seoTitle       String?
+  seoDescription String?
+  seoKeywords    String[]
+  relatedPostIds String[]
+
+  @@index([slug])
+  @@index([category])
+  @@index([published])
+  @@index([featured])
+  @@index([authorId])
+  @@map("blog_posts")
+}
+
+model Job {
+  id           String           @id @default(cuid())
+  title        String
+  slug         String           @unique
+  department   String
+  location     String
+  type         JobType
+  experience   String
+  salary       String?
+  description  String           @db.Text
+  requirements String[]
+  benefits     String[]
+  skills       String[]
+  published    Boolean          @default(false)
+  featured     Boolean          @default(false)
+  applications JobApplication[]
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  closingDate  DateTime?
+
+  @@index([slug])
+  @@index([department])
+  @@index([type])
+  @@index([published])
+  @@map("jobs")
+}
+
+model JobApplication {
+  id          String            @id @default(cuid())
+  job         Job               @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  jobId       String
+  firstName   String
+  lastName    String
+  email       String
+  phone       String?
+  resume      String
+  coverLetter String?           @db.Text
+  linkedIn    String?
+  portfolio   String?
+  status      ApplicationStatus @default(PENDING)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([jobId])
+  @@index([email])
+  @@index([status])
+  @@map("job_applications")
+}
+
+model CaseStudy {
+  id                String   @id @default(cuid())
+  title             String
+  slug              String   @unique
+  client            String
+  industry          String
+  excerpt           String
+  challenge         String   @db.Text
+  solution          String   @db.Text
+  results           String   @db.Text
+  coverImage        String?
+  images            String[]
+  videos            String[]
+  technologies      String[]
+  metrics           Json?
+  testimonial       String?  @db.Text
+  testimonialAuthor String?
+  testimonialRole   String?
+  published         Boolean  @default(false)
+  featured          Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // SEO
+  seoTitle       String?
+  seoDescription String?
+  seoKeywords    String[]
+
+  @@index([slug])
+  @@index([industry])
+  @@index([published])
+  @@map("case_studies")
+}
+
+model Contact {
+  id        String        @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String
+  phone     String?
+  company   String?
+  service   String?
+  budget    String?
+  message   String        @db.Text
+  status    ContactStatus @default(NEW)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@index([email])
+  @@index([status])
+  @@map("contacts")
+}
+
+model Media {
+  id        String   @id @default(cuid())
+  filename  String
+  url       String
+  alt       String?
+  type      String
+  size      Int
+  width     Int?
+  height    Int?
+  createdAt DateTime @default(now())
+
+  @@map("media")
+}
+
+model Newsletter {
+  id         String   @id @default(cuid())
+  email      String   @unique
+  subscribed Boolean  @default(true)
+  createdAt  DateTime @default(now())
+
+  @@index([email])
+  @@map("newsletters")
+}
+
+model Testimonial {
+  id             String   @id @default(cuid())
+  name           String
+  role           String
+  company        String
+  content        String   @db.Text
+  avatar         String?
+  videoUrl       String?
+  rating         Int      @default(5)
+  showOnHomepage Boolean  @default(false)
+  order          Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("testimonials")
+}
+
+model Service {
+  id             String       @id @default(cuid())
+  title          String
+  slug           String       @unique
+  icon           String
+  description    String       @db.Text
+  features       String[]
+  published      Boolean      @default(false)
+  featured       Boolean      @default(false)
+  order          Int          @default(0)
+  seoTitle       String?
+  seoDescription String?
+  seoKeywords    String[]
+  faqs           ServiceFaq[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@map("services")
+}
+
+model ServiceFaq {
+  id        String   @id @default(cuid())
+  serviceId String
+  service   Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  question  String
+  answer    String   @db.Text
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([serviceId])
+  @@map("service_faqs")
+}
+
+model Industry {
+  id             String                       @id @default(cuid())
+  name           String
+  slug           String                       @unique
+  title          String
+  description    String                       @db.Text
+  icon           String
+  published      Boolean                      @default(false)
+  order          Int                          @default(0)
+  seoTitle       String?
+  seoDescription String?
+  seoKeywords    String[]
+  challenges     IndustryChallengeSolution[]
+  createdAt      DateTime                     @default(now())
+  updatedAt      DateTime                     @updatedAt
+
+  @@map("industries")
+}
+
+model IndustryChallengeSolution {
+  id         String   @id @default(cuid())
+  industryId String
+  industry   Industry @relation(fields: [industryId], references: [id], onDelete: Cascade)
+  challenge  String   @db.Text
+  solution   String   @db.Text
+  order      Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([industryId])
+  @@map("industry_challenges_solutions")
+}
+
+model HomepageContent {
+  id             String   @id @default(cuid())
+  heroHeading    String
+  heroSubheading String
+  heroCtaText1   String
+  heroCtaLink1   String
+  heroCtaText2   String
+  heroCtaLink2   String
+  heroMediaUrl   String?
+  stats          Json     // Array of stats: [{ label, value, suffix, description, icon }]
+  whyChooseUs    Json     // Array of points: [{ title, description, icon }]
+  ctaHeading     String
+  ctaSubheading  String
+  ctaButtonText  String
+  ctaButtonLink  String
+  sectionOrder   String[] // Order of sections, e.g. ["hero", "capabilities", "tech_ecosystem", ...]
+  updatedAt      DateTime @updatedAt
+
+  @@map("homepage_content")
+}
+
+model PageSeo {
+  id              String   @id @default(cuid())
+  pagePath        String   @unique // e.g. "/", "/about", "/contact"
+  seoTitle        String
+  metaDescription String
+  keywords        String[]
+  ogImage         String?
+  canonicalUrl    String?
+  schemaSettings  Json?    // Structured schema JSON
+  updatedAt       DateTime @updatedAt
+
+  @@map("page_seo")
+}
+

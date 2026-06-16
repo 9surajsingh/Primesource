@@ -1,0 +1,163 @@
+'use client';
+
+import { motion } from 'framer-motion';
+import { Heart, Clock, TrendingUp, GraduationCap, Coffee, Globe, Users, Briefcase } from 'lucide-react';
+import { PageHero } from '@/components/shared/page-hero';
+import { JobCard } from '@/components/shared/job-card';
+import { CTASection } from '@/components/shared/cta-section';
+
+const benefits = [
+  { icon: Heart, title: 'Health & Wellness', description: 'Comprehensive health, dental, and vision insurance for you and your family.' },
+  { icon: Clock, title: 'Flexible Hours', description: 'Work when you\'re most productive with flexible scheduling and remote options.' },
+  { icon: TrendingUp, title: 'Career Growth', description: 'Structured career paths, mentorship programs, and promotion opportunities.' },
+  { icon: GraduationCap, title: 'Learning Budget', description: '$3,000 annual learning budget for courses, conferences, and certifications.' },
+  { icon: Coffee, title: 'Work-Life Balance', description: 'Generous PTO, company retreats, and a culture that respects your time.' },
+  { icon: Globe, title: 'Remote-Friendly', description: 'Work from anywhere with our distributed team across multiple time zones.' },
+];
+
+interface Job {
+  slug: string;
+  title: string;
+  department: string;
+  location: string;
+  type: string; // Will format database enum to user-friendly string
+  experience: string;
+  skills: string[];
+}
+
+interface CareersClientProps {
+  jobs: Job[];
+}
+
+export default function CareersClient({ jobs }: CareersClientProps) {
+  return (
+    <>
+      <PageHero
+        title="Join Our Team"
+        description="Build the future of technology and staffing with a team that values innovation, growth, and making a real impact."
+        breadcrumbs={[
+          { label: 'Home', href: '/' },
+          { label: 'Careers' },
+        ]}
+      />
+
+      {/* Culture */}
+      <section className="bg-[#0a0a0f] py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid items-center gap-12 lg:grid-cols-2">
+            <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+              <span className="mb-4 inline-block text-sm font-semibold uppercase tracking-wider text-blue-400">Our Culture</span>
+              <h2 className="mb-6 text-3xl font-bold text-white sm:text-4xl">Why Work at PrimeSource?</h2>
+              <p className="mb-6 text-lg text-slate-400">
+                At PrimeSource, we believe that great work happens when talented people are given the freedom, tools, and support they need to do their best. We're a team of passionate technologists, recruiters, and strategists who are committed to transforming how businesses leverage technology and talent.
+              </p>
+              <p className="text-lg text-slate-400">
+                Our culture is built on transparency, continuous learning, and a genuine commitment to work-life balance. We celebrate wins together, learn from setbacks, and always push each other to grow.
+              </p>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col gap-4">
+                <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 p-6">
+                  <Users className="mb-3 h-8 w-8 text-blue-400" />
+                  <p className="text-2xl font-bold text-white">150+</p>
+                  <p className="text-sm text-slate-400">Team Members</p>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-purple-500/10 to-blue-500/10 p-6">
+                  <Globe className="mb-3 h-8 w-8 text-purple-400" />
+                  <p className="text-2xl font-bold text-white">12</p>
+                  <p className="text-sm text-slate-400">Countries</p>
+                </div>
+              </div>
+              <div className="mt-8 flex flex-col gap-4">
+                <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 p-6">
+                  <Briefcase className="mb-3 h-8 w-8 text-cyan-400" />
+                  <p className="text-2xl font-bold text-white">4.8★</p>
+                  <p className="text-sm text-slate-400">Glassdoor Rating</p>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-blue-500/10 to-purple-500/10 p-6">
+                  <TrendingUp className="mb-3 h-8 w-8 text-blue-400" />
+                  <p className="text-2xl font-bold text-white">95%</p>
+                  <p className="text-sm text-slate-400">Retention Rate</p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Benefits */}
+      <section className="bg-[#08080c] border-y border-white/5 py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="mb-16 text-center">
+            <span className="mb-4 inline-block text-sm font-semibold uppercase tracking-wider text-blue-400">Perks & Benefits</span>
+            <h2 className="mb-6 text-3xl font-bold text-white sm:text-4xl">What We Offer</h2>
+          </motion.div>
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {benefits.map((benefit, index) => {
+              const Icon = benefit.icon;
+              return (
+                <motion.div
+                  key={benefit.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.08 }}
+                  className="rounded-2xl border border-white/10 bg-white p-6 transition-all hover:border-blue-500/30 hover:shadow-lg hover:shadow-slate-100/60"
+                >
+                  <Icon className="mb-4 h-8 w-8 text-blue-400" />
+                  <h3 className="mb-2 text-lg font-bold text-white">{benefit.title}</h3>
+                  <p className="text-sm text-slate-400">{benefit.description}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Open Positions */}
+      <section className="bg-[#0a0a0f] py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="mb-16 text-center">
+            <span className="mb-4 inline-block text-sm font-semibold uppercase tracking-wider text-blue-400">Open Positions</span>
+            <h2 className="mb-6 text-3xl font-bold text-white sm:text-4xl">Current Openings</h2>
+            <p className="mx-auto max-w-2xl text-lg text-slate-400">Find your next opportunity. We're always looking for talented people to join our team.</p>
+          </motion.div>
+          <div className="grid gap-6 md:grid-cols-2">
+            {jobs.length > 0 ? (
+              jobs.map((job, index) => (
+                <motion.div
+                  key={job.slug}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.05 }}
+                >
+                  <JobCard 
+                    title={job.title}
+                    department={job.department}
+                    location={job.location}
+                    type={job.type}
+                    experience={job.experience}
+                    skills={job.skills}
+                    slug={job.slug}
+                  />
+                </motion.div>
+              ))
+            ) : (
+              <div className="col-span-2 text-center text-slate-500 py-12">
+                No active openings currently. Check back later or send us your resume below.
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <CTASection
+        title="Don't See Your Role?"
+        description="We're always looking for exceptional talent. Send us your resume and we'll reach out when we have a matching opportunity."
+        primaryAction={{ label: 'Send Your Resume', href: '/contact' }}
+        secondaryAction={{ label: 'Learn About Us', href: '/about' }}
+      />
+    </>
+  );
+}

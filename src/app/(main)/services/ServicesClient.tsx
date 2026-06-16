@@ -1,0 +1,187 @@
+'use client';
+
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import Image from 'next/image';
+import * as LucideIcons from 'lucide-react';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { PageHero } from '@/components/shared/page-hero';
+import { CTASection } from '@/components/shared/cta-section';
+
+// Dynamic icon resolver
+function getIcon(iconName: string) {
+  const IconComponent = (LucideIcons as any)[iconName];
+  return IconComponent || LucideIcons.HelpCircle;
+}
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 30 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.6 },
+};
+
+const staggerContainer = {
+  initial: {},
+  whileInView: { transition: { staggerChildren: 0.1 } },
+  viewport: { once: true },
+};
+
+interface Service {
+  title: string;
+  slug: string;
+  icon: string;
+  description: string;
+  features: string[];
+}
+
+interface ServicesClientProps {
+  services: Service[];
+}
+
+export default function ServicesClient({ services }: ServicesClientProps) {
+  // Group services dynamically
+  const staffingServices = services.filter(s => 
+    s.slug.includes('staffing') || 
+    s.slug.includes('recruitment') || 
+    s.slug.includes('talent')
+  );
+
+  const automationServices = services.filter(s => 
+    s.slug.includes('ai') || 
+    s.slug.includes('ml') || 
+    s.slug.includes('automation') || 
+    s.slug.includes('workflow')
+  );
+
+  const techServices = services.filter(s => 
+    !staffingServices.includes(s) && 
+    !automationServices.includes(s)
+  );
+
+  const serviceCategories = [
+    {
+      title: 'Staffing Solutions',
+      description: 'Access top-tier technology professionals and recruitment models to accelerate project delivery.',
+      href: '/services/staffing',
+      services: staffingServices,
+      image: '/images/services/staffing.png'
+    },
+    {
+      title: 'Technology & Cloud Solutions',
+      description: 'Build powerful custom software, responsive web portals, and scale secure cloud infrastructure.',
+      href: '/services/web-development',
+      services: techServices,
+      image: '/images/services/web_dev.png'
+    },
+    {
+      title: 'AI & Automation Solutions',
+      description: 'Unlock enterprise productivity with generative AI agents, neural pipelines, and automation flows.',
+      href: '/services/ai-automation',
+      services: automationServices,
+      image: '/images/services/ai_automation.png'
+    },
+  ].filter(category => category.services.length > 0);
+
+  return (
+    <>
+      <PageHero
+        title="Our Services"
+        description="Comprehensive technology and staffing solutions designed to accelerate your business growth and digital transformation."
+        breadcrumbs={[
+          { label: 'Home', href: '/' },
+          { label: 'Services' },
+        ]}
+      />
+
+      {serviceCategories.map((category, catIndex) => (
+        <section
+          key={category.title}
+          className={`py-20 lg:py-28 ${catIndex % 2 === 0 ? 'bg-[#0a0a0f]' : 'bg-[#08080c]'}`}
+        >
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid gap-12 lg:grid-cols-12 items-start">
+              {/* Category Info + Image (Sticky on Desktop) */}
+              <div className="lg:col-span-4 lg:sticky lg:top-28 flex flex-col">
+                <span className="mb-4 inline-block text-sm font-semibold uppercase tracking-wider text-blue-400">
+                  {category.title}
+                </span>
+                <h2 className="mb-6 text-3xl font-bold text-white sm:text-4xl">
+                  {category.title}
+                </h2>
+                <p className="mb-8 text-slate-400 leading-relaxed">
+                  {category.description}
+                </p>
+                {category.image && (
+                  <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-white/10 bg-white/5 hover:shadow-md transition-shadow">
+                    <Image
+                      src={category.image}
+                      alt={category.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 100vw, 33vw"
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Service Cards (Grid on Right) */}
+              <div className="lg:col-span-8">
+                <motion.div
+                  {...staggerContainer}
+                  className="grid gap-6 sm:grid-cols-2"
+                >
+                  {category.services.map((service, index) => {
+                    const Icon = getIcon(service.icon);
+                    return (
+                      <motion.div
+                        key={service.title}
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                        className="group rounded-2xl border border-white/10 bg-white/[0.02] p-8 transition-all duration-300 hover:border-blue-500/20 hover:shadow-2xl hover:shadow-blue-500/5"
+                      >
+                        <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-blue-50 text-blue-400">
+                          <Icon className="h-7 w-7" />
+                        </div>
+                        <h3 className="mb-3 text-xl font-bold text-white group-hover:text-blue-400 transition-colors">
+                          {service.title}
+                        </h3>
+                        <p className="mb-6 text-slate-400 text-sm leading-relaxed">{service.description}</p>
+                        {service.features && service.features.length > 0 && (
+                          <ul className="mb-6 space-y-2">
+                            {service.features.map((feature) => (
+                              <li key={feature} className="flex items-start gap-2 text-sm text-slate-400">
+                                <CheckCircle2 className="h-4 w-4 shrink-0 text-blue-500 mt-0.5" />
+                                <span>{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                        <Link
+                          href={`/services/${service.slug}`}
+                          className="inline-flex items-center gap-2 text-sm font-semibold text-blue-400 transition-colors hover:text-blue-500"
+                        >
+                          Learn More
+                          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        </Link>
+                      </motion.div>
+                    );
+                  })}
+                </motion.div>
+              </div>
+            </div>
+          </div>
+        </section>
+      ))}
+
+      <CTASection
+        title="Ready to Get Started?"
+        description="Let us help you find the perfect solution for your business needs."
+        primaryAction={{ label: 'Contact Us', href: '/contact' }}
+        secondaryAction={{ label: 'View Case Studies', href: '/case-studies' }}
+      />
+    </>
+  );
+}

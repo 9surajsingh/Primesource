@@ -1,0 +1,174 @@
+'use client';
+
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { Smartphone, TabletSmartphone, AppWindow, Paintbrush, TestTube, Rocket, CheckCircle2 } from 'lucide-react';
+import { PageHero } from '@/components/shared/page-hero';
+import { CTASection } from '@/components/shared/cta-section';
+
+const platforms = [
+  {
+    title: 'iOS Development',
+    description: "Native iOS applications built with Swift and SwiftUI, leveraging Apple's latest frameworks for exceptional performance and seamless App Store approval.",
+    tech: ['Swift', 'SwiftUI', 'UIKit', 'Core Data', 'ARKit'],
+    color: 'from-blue-500 to-indigo-500',
+  },
+  {
+    title: 'Android Development',
+    description: 'Native Android apps using Kotlin and Jetpack Compose, optimized for the full spectrum of Android devices and form factors.',
+    tech: ['Kotlin', 'Jetpack Compose', 'Room', 'Retrofit', 'Hilt'],
+    color: 'from-green-500 to-emerald-500',
+  },
+  {
+    title: 'Cross-Platform',
+    description: 'Cost-effective cross-platform solutions with React Native and Flutter that share code while delivering native experiences on both iOS and Android.',
+    tech: ['React Native', 'Flutter', 'Dart', 'Expo', 'Firebase'],
+    color: 'from-cyan-500 to-blue-500',
+  },
+];
+
+const services = [
+  { icon: Smartphone, title: 'Mobile App Design', description: 'User-centered design with intuitive interfaces, micro-interactions, and delightful animations that keep users engaged.' },
+  { icon: AppWindow, title: 'App Prototyping', description: 'Interactive prototypes that let you test and validate concepts before investing in full development.' },
+  { icon: TabletSmartphone, title: 'Tablet & Wearable Apps', description: 'Optimized experiences for tablets, smartwatches, and other connected devices.' },
+  { icon: Paintbrush, title: 'UI/UX Redesign', description: 'Modernize your existing app with improved usability, updated visuals, and better performance.' },
+  { icon: TestTube, title: 'Quality Assurance', description: 'Comprehensive testing on real devices, automated testing suites, and beta testing programs.' },
+  { icon: Rocket, title: 'App Store Optimization', description: 'Strategic ASO to maximize visibility, downloads, and conversion rates on the App Store and Google Play.' },
+];
+
+const processSteps = [
+  { step: '01', title: 'Strategy & Planning', description: 'Define app objectives, target audience, feature roadmap, and technical architecture.' },
+  { step: '02', title: 'UX/UI Design', description: 'Create wireframes, user flows, and polished visual designs with interactive prototypes.' },
+  { step: '03', title: 'Development', description: 'Agile development in two-week sprints with regular builds and progress demos.' },
+  { step: '04', title: 'Testing & QA', description: 'Rigorous testing across devices, OS versions, and network conditions for reliability.' },
+  { step: '05', title: 'Launch & Growth', description: 'App store submission, launch strategy, analytics setup, and iterative improvement.' },
+];
+
+export default function MobileDevelopmentPage() {
+  return (
+    <>
+      <PageHero
+        title="Mobile App Development"
+        description="Create stunning mobile experiences that users love. Native and cross-platform apps for iOS and Android."
+        breadcrumbs={[
+          { label: 'Home', href: '/' },
+          { label: 'Services', href: '/services' },
+          { label: 'Mobile Development' },
+        ]}
+      />
+
+      {/* Platforms */}
+      <section className="bg-slate-50 py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="mb-16 text-center">
+            <span className="mb-4 inline-block text-sm font-semibold uppercase tracking-wider text-blue-600">Platforms</span>
+            <h2 className="mb-6 text-3xl font-bold text-slate-900 sm:text-4xl">Every Platform, Covered</h2>
+            <p className="mx-auto max-w-2xl text-lg text-slate-600">Whether you need native performance or cross-platform efficiency, we have the expertise to deliver.</p>
+          </motion.div>
+          <div className="grid gap-8 lg:grid-cols-3">
+            {platforms.map((platform, index) => (
+              <motion.div
+                key={platform.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.15 }}
+                className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm animate-fade-in"
+              >
+                <div className={`mb-6 h-2 w-20 rounded-full bg-gradient-to-r ${platform.color}`} />
+                <h3 className="mb-4 text-2xl font-bold text-slate-900">{platform.title}</h3>
+                <p className="mb-6 text-slate-600">{platform.description}</p>
+                <div className="flex flex-wrap gap-2">
+                  {platform.tech.map((t) => (
+                    <span key={t} className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-650">{t}</span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Services */}
+      <section className="bg-white border-t border-b border-slate-200/60 py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-12 items-start">
+            {/* Info + Image (Left) */}
+            <div className="lg:col-span-4 lg:sticky lg:top-28 flex flex-col">
+              <span className="mb-4 inline-block text-sm font-semibold uppercase tracking-wider text-blue-600">Services</span>
+              <h2 className="mb-6 text-3xl font-bold text-slate-900 sm:text-4xl">Mobile App Services</h2>
+              <p className="mb-8 text-slate-600 leading-relaxed">We provide comprehensive mobile development services, from initial product strategy and UX design to final App Store deployment.</p>
+              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-slate-200 shadow-sm bg-slate-100 hover:shadow-md transition-shadow">
+                <Image
+                  src="/images/services/mobile_dev.png"
+                  alt="Mobile Development Illustration"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 33vw"
+                />
+              </div>
+            </div>
+
+            {/* Cards (Right) */}
+            <div className="lg:col-span-8">
+              <div className="grid gap-6 sm:grid-cols-2">
+                {services.map((service, index) => {
+                  const Icon = service.icon;
+                  return (
+                    <motion.div
+                      key={service.title}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: index * 0.08 }}
+                      className="rounded-2xl border border-slate-200/80 bg-white p-6 transition-all hover:border-blue-500/30 hover:shadow-md"
+                    >
+                      <Icon className="mb-4 h-8 w-8 text-blue-600" />
+                      <h3 className="mb-2 text-lg font-bold text-slate-900">{service.title}</h3>
+                      <p className="text-sm text-slate-600 leading-relaxed">{service.description}</p>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Process */}
+      <section className="bg-slate-50 py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="mb-16 text-center">
+            <span className="mb-4 inline-block text-sm font-semibold uppercase tracking-wider text-blue-600">Process</span>
+            <h2 className="mb-6 text-3xl font-bold text-slate-900 sm:text-4xl">Our Development Process</h2>
+          </motion.div>
+          <div className="space-y-8">
+            {processSteps.map((step, index) => (
+              <motion.div
+                key={step.step}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="flex items-start gap-6 rounded-2xl border border-slate-200 bg-white p-6 transition-all hover:border-blue-500/20 hover:shadow-md"
+              >
+                <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 text-lg font-bold text-white">{step.step}</span>
+                <div>
+                  <h3 className="mb-1 text-lg font-bold text-slate-900">{step.title}</h3>
+                  <p className="text-slate-650">{step.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <CTASection
+        title="Ready to Build Your App?"
+        description="From concept to App Store, we'll bring your mobile vision to life."
+        primaryAction={{ label: 'Start Your Project', href: '/contact' }}
+        secondaryAction={{ label: 'See Our Portfolio', href: '/case-studies' }}
+      />
+    </>
+  );
+}
